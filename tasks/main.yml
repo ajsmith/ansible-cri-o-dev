@@ -11,6 +11,7 @@
       - glib2-devel
       - glibc-devel
       - glibc-static
+      - golang
       - gpgme-devel
       - libassuan-devel
       - libgpg-error-devel
