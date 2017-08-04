@@ -25,8 +25,49 @@
 
 - name: Clone cri-o repository
   git:
-    repo: "{{ cri_o_git_repo }}"
-    refspec: "{{ cri_o_git_refspec }}"
-    dest: "{{ cri_o_clone_dest }}"
-    accept_hostkey: "{{ git_accept_hostkey }}"
+    repo: "{{ crio_git_repo }}"
+    refspec: "{{ crio_git_refspec }}"
+    dest: "{{ crio_git_dest }}"
+    accept_hostkey: "{{ crio_git_accept_hostkey }}"
+
+- name: Make cri-o install tools
+  command: make install.tools
+  args:
+    chdir: "{{ crio_git_dest }}"
+
+- name: Make cri-o
+  command: make
+  args:
+    chdir: "{{ crio_git_dest }}"
+
+- name: Install cri-o
+  command: make install
+  args:
+    chdir: "{{ crio_git_dest }}"
+  become: yes
+
+- name: Install cri-o configuration
+  command: make install.config
+  args:
+    chdir: "{{ crio_git_dest }}"
+  become: yes
+
+- name: Add systemd service configuration
+  copy:
+    src: systemd/crio.service
+    dest: /etc/systemd/system/crio.service
+  become: yes
+  register: crio_service_configuration
+
+- name: Reload systemd unit configurations
+  command: systemctl daemon-reload
+  become: yes
+  when: crio_service_configuration | changed
+
+- name: Configure the cri-o service
+  service:
+    name: crio
+    enabled: yes
+    state: started
+  become: yes
 ...
