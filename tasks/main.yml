@@ -31,24 +31,23 @@
     accept_hostkey: "{{ crio_git_accept_hostkey }}"
 
 - name: Make cri-o install tools
-  command: make install.tools
-  args:
+  make:
+    target: install.tools
     chdir: "{{ crio_git_dest }}"
 
 - name: Make cri-o
-  command: make
-  args:
+  make:
     chdir: "{{ crio_git_dest }}"
 
 - name: Install cri-o
-  command: make install
-  args:
+  make:
+    target: install
     chdir: "{{ crio_git_dest }}"
   become: yes
 
 - name: Install cri-o configuration
-  command: make install.config
-  args:
+  make:
+    target: install.config
     chdir: "{{ crio_git_dest }}"
   become: yes
 
