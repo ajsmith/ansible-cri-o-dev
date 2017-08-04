@@ -1,0 +1,6 @@
+---
+cri_o_git_repo: https://github.com/kubernetes-incubator/cri-o
+cri_o_git_refspec: master
+cri_o_clone_dest: "{{ ansible_user_dir }}/cri-o"
+git_accept_hostkey: yes
+...

@@ -7,6 +7,7 @@
     required_packages:
       - btrfs-progs-devel
       - device-mapper-devel
+      - git
       - glib2-devel
       - glibc-devel
       - glibc-static
@@ -20,4 +21,11 @@
       - runc
   when: ansible_distribution == 'Fedora'
   become: yes
+
+- name: Clone cri-o repository
+  git:
+    repo: "{{ cri_o_git_repo }}"
+    refspec: "{{ cri_o_git_refspec }}"
+    dest: "{{ cri_o_clone_dest }}"
+    accept_hostkey: "{{ git_accept_hostkey }}"
 ...
