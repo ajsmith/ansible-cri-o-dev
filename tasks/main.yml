@@ -1,10 +1,7 @@
 ---
 - name: Install required packages on Fedora
   dnf:
-    name: "{{ required_packages }}"
-    state: latest
-  vars:
-    required_packages:
+    name:
       - btrfs-progs-devel
       - device-mapper-devel
       - git
@@ -20,6 +17,7 @@
       - ostree-devel
       - pkgconfig
       - runc
+    state: latest
   when: ansible_distribution == 'Fedora'
   become: yes
 
